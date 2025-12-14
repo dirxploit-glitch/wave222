@@ -18,7 +18,7 @@ jobs:
       - name: Setup Flutter Environment
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.6' # <--- वर्ज़न यहाँ बदला गया है
+          flutter-version: '3.38.5' # <--- Dart SDK 3.5.2 की आवश्यकता को पूरा करने के लिए बदला गया
           cache: false 
           
       - name: Accept Android Licenses
