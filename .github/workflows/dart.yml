@@ -1,0 +1,45 @@
+
+name: Flutter APK Build Final
+
+# यह workflow इन इवेंट्स पर चलेगा:
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    # यह Ubuntu के नवीनतम वर्ज़न पर चलेगा
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter Environment
+        # Flutter SDK को सीधे वर्ज़न नंबर से सेट करें
+        uses: subosito/flutter-action@v2
+        with:
+          # एक विश्वसनीय, पुराना वर्ज़न (जैसे 3.10.0) उपयोग करें जो CI में स्थिर है
+          flutter-version: '3.10.0'
+          # यह सुनिश्चित करने के लिए कैशिंग अक्षम करें कि यह 3.10.0 को सही ढंग से डाउनलोड करे
+          cache: false 
+          
+      - name: Accept Android Licenses
+        # Android लाइसेंस स्वीकार करें
+        run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+
+      - name: Install Project Dependencies
+        run: flutter pub get
+
+      - name: Build Android APK (Release Mode)
+        # फाइनल APK (रिलीज़ मोड) बनाता है
+        run: flutter build apk --release
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Wave222-Release-APK
+          path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 7
