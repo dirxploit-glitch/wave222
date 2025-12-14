@@ -1,0 +1,46 @@
+name: Flutter Android APK Build
+
+# यह workflow तब चलेगा जब:
+# 1. 'main' ब्रांच में कोई कोड पुश किया जाएगा।
+# 2. आप GitHub पर Actions टैब से इसे मैन्युअल रूप से चलाएंगे।
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    # यह Ubuntu के नवीनतम स्थिर वर्ज़न पर चलेगा (Colab से ज़्यादा स्थिर)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        # रेपो के कोड को चेक आउट करता है
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter Environment
+        # Flutter SDK को सेट करता है
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.6' # एक स्थिर Flutter वर्ज़न का उपयोग करें
+          channel: 'stable'
+
+      - name: Install Project Dependencies
+        # pubspec.yaml से निर्भरताएँ (dependencies) इंस्टॉल करता है
+        run: flutter pub get
+
+      - name: Build Android APK (Release Mode)
+        # Android के लिए फाइनल APK (रिलीज़ मोड में) बनाता है
+        run: flutter build apk --release
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          # artifact का नाम जिसके तहत आप इसे Actions टैब से डाउनलोड करेंगे
+          name: wave222-app-release-apk
+          # APK फ़ाइल का स्थान
+          path: build/app/outputs/flutter-apk/app-release.apk
+          # यह 7 दिनों के लिए उपलब्ध रहेगा
+          retention-days: 7
+            
