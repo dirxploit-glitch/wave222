@@ -10,7 +10,8 @@ plugins {
 
 android {
     namespace = "com.example.chat_app"
-    compileSdk = flutter.compileSdkVersion
+        compileSdk = 35 // <--- सीधे 35 पर सेट करें
+    
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -27,7 +28,8 @@ android {
         applicationId = "com.example.chat_app"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdkVersion = flutter.minSdkVersion
+                minSdkVersion = 23 // <--- सीधे 23 पर सेट करें
+        
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
